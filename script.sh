@@ -15,7 +15,7 @@ tx_bps=$(( (tx2 - tx1) / INTERVAL ))
 id_name="dor-auto${VERSION}"
 ((VERSION++))
 sed -i "s/^VERSION=.*/VERSION=$VERSION/" .env
-# Build JSON with printf
+# Build JSON
 JSON=$(printf \
   '{"TableName":"imtech","Item":{"id":{"S":"%s"},"interface":{"S":"%s"},"rx_bps":{"N":"%d"},"tx_bps":{"N":"%d"}}}' \
   "$id_name" "$IF" "$rx_bps" "$tx_bps"
@@ -24,7 +24,4 @@ JSON=$(printf \
 # Send it
 URL="https://mj92zct6nc.execute-api.il-central-1.amazonaws.com/default/imtech-dor-py" 
 curl -X POST $URL -H "Content-Type: application/json" -d "$JSON"
-
-# Debug print
-echo "Sent JSON: $JSON"
 
